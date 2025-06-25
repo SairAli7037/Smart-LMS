@@ -4,7 +4,8 @@ services:
     env: python
     region: oregon
     plan: free
-    buildCommand: pip install -r requirements.txt
+    workDir: smart_lms   
+    buildCommand: pip install -r ../requirements.txt
     startCommand: gunicorn smart_lms.wsgi:application
     envVars:
       - key: DJANGO_SETTINGS_MODULE
