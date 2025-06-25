@@ -32,6 +32,9 @@ load_dotenv()
 TOGETHER_API_KEY = os.getenv("TOGETHER_API_KEY")
 
 
+if os.environ.get('RENDER'):
+    ALLOWED_HOSTS.append(os.environ['RENDER_EXTERNAL_HOSTNAME'])
+
 # Application definition
 
 INSTALLED_APPS = [

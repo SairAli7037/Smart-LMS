@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: smart-lms-backend
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn smart_lms.wsgi:application
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: smart_lms.settings
+    buildFilter:
+      paths:
+        - smart_lms/**
+        - requirements.txt
+        - render.yaml
+
+  - type: web
+    name: smart-lms-frontend
+    env: static
+    region: oregon
+    plan: free
+    buildCommand: cd smart-lms-frontend && npm install && npm run build
+    staticPublishPath: smart-lms-frontend/build
+    buildFilter:
+      paths:
+        - smart-lms-frontend/**
+        - render.yaml
