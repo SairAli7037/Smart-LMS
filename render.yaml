@@ -4,12 +4,12 @@ services:
     env: python
     region: oregon
     plan: free
-    workDir: smart_lms   
+    workDir: .  
     buildCommand: pip install -r ../requirements.txt
-    startCommand: gunicorn smart_lms.wsgi:application
+    startCommand: gunicorn smart_lms.smart_lms.wsgi:application
     envVars:
       - key: DJANGO_SETTINGS_MODULE
-        value: smart_lms.settings
+        value: smart_lms.smart_lms.settings
     buildFilter:
       paths:
         - smart_lms/**
