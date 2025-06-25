@@ -6,10 +6,10 @@ services:
     plan: free
     workDir: smart_lms   
     buildCommand: pip install -r ../requirements.txt
-    startCommand: PYTHONPATH="." gunicorn smart_lms.wsgi:application
+    startCommand: gunicorn smart_lms.wsgi:application
     envVars:
       - key: DJANGO_SETTINGS_MODULE
-        value: smart_lms.smart_lms.settings
+        value: smart_lms.settings
     buildFilter:
       paths:
         - smart_lms/**
