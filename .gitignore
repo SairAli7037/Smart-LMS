@@ -1,0 +1,25 @@
+# === PYTHON / DJANGO ===
+*.pyc
+__pycache__/
+db.sqlite3
+.env
+
+# Virtual Environment
+venv/
+env/
+Include/
+Lib/
+Scripts/
+pyvenv.cfg
+
+# === REACT / NODE ===
+smart-lms-frontend/node_modules/
+smart-lms-frontend/.env.local
+smart-lms-frontend/dist/
+smart-lms-frontend/.vite/
+
+# System files
+.DS_Store
+*.log
+.vscode/
+.idea/
