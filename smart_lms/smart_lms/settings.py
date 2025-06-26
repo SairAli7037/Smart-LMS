@@ -103,7 +103,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'smart_lms.wsgi.application'
+WSGI_APPLICATION = 'smart_lms.smart_lms.wsgi.application'
 
 
 # Database
