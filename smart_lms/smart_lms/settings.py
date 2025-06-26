@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'smart_lms.users',
+    'users',
     'courses',
     'quizzes',
     'ai_tutor',
