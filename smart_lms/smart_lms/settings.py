@@ -86,7 +86,7 @@ CSRF_COOKIE_DOMAIN = 'localhost'
 LOGIN_URL = '/api/login/'
 
 
-ROOT_URLCONF = 'smart_lms.urls'
+ROOT_URLCONF = 'smart_lms.smart_lms.urls'
 
 TEMPLATES = [
     {
@@ -103,7 +103,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'smart_lms.wsgi.application'
+WSGI_APPLICATION = 'smart_lms.smart_lms.wsgi.application'
 
 
 # Database
