@@ -22,12 +22,47 @@ const api = axios.create({
 
 });
 
-api.interceptors.request.use(config => {
-    const token=getCSRFToken();
-    if(token){
-        config.headers["X-CSRFToken"] = token;
-    }
+// api.interceptors.request.use(config => {
+//     const token=getCSRFToken();
+//     if(token){
+//         config.headers["X-CSRFToken"] = token;
+//     }
+//     return config;
+//   });
+
+// In your api.js (modified version)
+let csrfReady = false;
+let csrfPromise = null;
+
+export const ensureCSRF = async () => {
+  if (csrfReady) return true;
+  if (csrfPromise) return csrfPromise;
+
+  csrfPromise = api.get("/get-csrf-token/")
+    .then(() => {
+      csrfReady = true;
+      return true;
+    })
+    .catch(err => {
+      csrfPromise = null; // Allow retry
+      throw err;
+    });
+
+  return csrfPromise;
+};
+
+api.interceptors.request.use(async (config) => {
+  // Skip for read-only methods
+  if (['get', 'head', 'options'].includes(config.method.toLowerCase())) {
     return config;
-  });
+  }
+
+  await ensureCSRF();
+  const token = getCSRFToken();
+  if (token) {
+    config.headers['X-CSRFToken'] = token;
+  }
+  return config;
+});
 export default api;
 

@@ -13,6 +13,7 @@ import CreateQuiz from './pages/InstructorPage/CreateQuiz';
 import AssignQuiz from './pages/InstructorPage/AssignQuiz';
 import TakeQuiz from './pages/TakeQuiz';
 import api from "./utils/api";
+import { ensureCSRF } from './utils/api';
 import AddCourse from './pages/InstructorPage/AddCourse';
 import MyQuizzes from './pages/InstructorPage/MyQuizzes';
 import AddQuestion from './pages/InstructorPage/AddQuestion';
@@ -34,14 +35,13 @@ import StudentAIChat from './pages/StudentPage/StudentAIChat';
 
 
 function App() {
-  const [csrfReady, setCsrfReady] = useState(false);
-  
+
   useEffect(() => {
-  api.get("/get-csrf-token/")
-    .then(() => console.log("CSRF token fetched"))
-    .catch((err) => {
-      console.error("Failed to fetch CSRF token:", err);
-    });
+    ensureCSRF()
+      .then(() => console.log("CSRF token fetched"))
+      .catch(err => {
+        console.error("Failed to fetch CSRF token:", err);
+      });
   }, []);
 
   return (
