@@ -75,18 +75,23 @@ from corsheaders.defaults import default_headers
 CORS_ALLOW_HEADERS = list(default_headers) + [
     'X-CSRFToken',
     'Content-Type',
+    'Authorization',
+    'Accept',
 ]
 
 CSRF_TRUSTED_ORIGINS = [ "https://smart-lms-frontend.onrender.com",]
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE=True
-SESSION_COOKIE_SAMESITE = None
+SESSION_COOKIE_SAMESITE = 'None'
 CSRF_COOKIE_SAMESITE = 'Lax'
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 USE_X_FORWARDED_HOST = True
 SESSION_COOKIE_DOMAIN ='https://smart-lms-frontend.onrender.com' 
 CSRF_COOKIE_DOMAIN = 'https://smart-lms-frontend.onrender.com' 
- 
+CORS_EXPOSE_HEADERS = [
+    'Content-Type',
+    'X-CSRFToken',
+]
 LOGIN_URL = '/api/login/'
 
 
