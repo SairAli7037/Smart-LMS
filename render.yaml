@@ -4,7 +4,7 @@ services:
     env: python
     region: oregon
     plan: free
-    workDir: smart_lms 
+    workDir: .
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn smart_lms.wsgi:application
     envVars:
