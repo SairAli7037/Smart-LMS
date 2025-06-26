@@ -77,12 +77,12 @@ CORS_ALLOW_HEADERS = list(default_headers) + [
     'Content-Type',
 ]
 
-CSRF_TRUSTED_ORIGINS = ['http://localhost:5173','https://*.onrender.com']
-CSRF_COOKIE_SECURE = False
-SESSION_COOKIE_SAMESITE = 'Lax'
+CSRF_TRUSTED_ORIGINS = [ "https://smart-lms-frontend.onrender.com",]
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE=True
+SESSION_COOKIE_SAMESITE = None
 CSRF_COOKIE_SAMESITE = 'Lax'
-CSRF_COOKIE_HTTPONLY = False 
-CSRF_COOKIE_DOMAIN = 'localhost'  
+ 
 LOGIN_URL = '/api/login/'
 
 
