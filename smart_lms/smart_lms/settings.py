@@ -82,6 +82,10 @@ CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE=True
 SESSION_COOKIE_SAMESITE = None
 CSRF_COOKIE_SAMESITE = 'Lax'
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+USE_X_FORWARDED_HOST = True
+SESSION_COOKIE_DOMAIN ='https://smart-lms-frontend.onrender.com' 
+CSRF_COOKIE_DOMAIN = 'https://smart-lms-frontend.onrender.com' 
  
 LOGIN_URL = '/api/login/'
 
