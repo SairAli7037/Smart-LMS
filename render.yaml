@@ -6,7 +6,7 @@ services:
     plan: free
     workDir: .
     buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn smart_lms.wsgi:application
+    startCommand: gunicorn smart_lms.smart_lms.wsgi:application
     envVars:
       - key: DJANGO_SETTINGS_MODULE
         value: smart_lms.settings
