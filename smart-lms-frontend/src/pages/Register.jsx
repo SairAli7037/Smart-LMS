@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 
 function Register() {
   const navigate = useNavigate();
-
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -14,48 +13,82 @@ function Register() {
     role: "student",
   });
 
-  
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [success, setSuccess] = useState(null);
+  const [csrfReady, setCsrfReady] = useState(false);
+
+  // Enhanced CSRF initialization
+  const initializeCSRF = async () => {
+    try {
+      await api.get("/get-csrf-token/");
+      if (!document.cookie.includes('csrftoken')) {
+        throw new Error('CSRF cookie not set');
+      }
+      setCsrfReady(true);
+      console.log("CSRF token verified");
+    } catch (err) {
+      console.error("CSRF initialization failed:", err);
+      setMessage("Security system error. Please refresh the page.");
+      setCsrfReady(false);
+    }
+  };
 
   useEffect(() => {
-    api.get("/get-csrf-token/").then(() => {
-      console.log("CSRF token set");
-    });
+    initializeCSRF();
   }, []);
-  
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     setLoading(true);
+    setMessage('');
     setSuccess(null);
-    
-    try {
 
-      const response = await api.post("/register/", formData); // API call using the base URL
-      if(response.status==201){
-        console.log("Registration successful:", response.data.message);
-        setMessage(response.data.message);
-        console.log(message)
+    try {
+      // Ensure CSRF is ready before submission
+      if (!csrfReady) {
+        await initializeCSRF();
+        if (!csrfReady) {
+          throw new Error('Security system not ready');
+        }
+      }
+
+      const response = await api.post("/register/", formData);
+      
+      if (response.status === 201) {
+        console.log("Registration successful:", response.data);
+        setMessage(response.data.message || "Registration successful!");
         setSuccess(true);
-        setFormData({ username: '', email: '', password: '', role: '' });
-        // navigate("/login"); // Redirect to login after successful registration
+        setFormData({ 
+          username: '', 
+          email: '', 
+          password: '', 
+          role: 'student' 
+        });
+        
+        // Optional: Auto-redirect to login
+        setTimeout(() => navigate("/login"), 2000);
+      } else {
+        throw new Error(response.data.error || 'Registration failed');
       }
-      else{
-        setMessage(response.data.error || 'Registration failed');
-        console.log(message)
-        setSuccess(false);
-      }
-    
     } catch (error) {
-      console.error("Error during registration:", error);
-      setSuccess(false) ;
-      setMessage("Registration failed! Please Try Again")
+      console.error("Registration error:", error);
+      
+      if (error.response?.status === 403) {
+        setCsrfReady(false);
+        setMessage("Session expired. Please try again.");
+      } else {
+        setMessage(
+          error.response?.data?.error || 
+          error.message || 
+          "Registration failed. Please try again."
+        );
+      }
+      setSuccess(false);
     } finally {
       setLoading(false);
     }

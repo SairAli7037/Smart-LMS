@@ -6,6 +6,49 @@ import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 
+// function Login() {
+//   const navigate = useNavigate();
+//   const { setUser } = useContext(AuthContext);
+//   const [formData, setFormData] = useState({
+//     username: "",
+//     password: "",
+//   });
+
+//   const [error, setError] = useState(null);
+//   const [loading, setLoading] = useState(false);
+
+//   const handleChange = (e) => {
+//     setFormData({ ...formData, [e.target.name]: e.target.value });
+//   };
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+
+//     setLoading(true);
+//     setError(null);
+
+//     try {
+//       const response = await api.post("/login/", formData); // API call using the base URL
+//       console.log("Login successful:", response.data);
+//       localStorage.setItem("token", response.data.token); // Save the token in local storage
+//       if (response.data.message === "Login successful") {
+//         const userInfo = await api.get("/user/");
+//         setUser(userInfo.data);
+//         const role = userInfo.data.role;
+//         console.log(role)
+//         if (role === "student") {
+//           navigate("/student-dashboard");
+//         } else if (role === "instructor") {
+//           navigate("/instructor-dashboard");
+//         }
+//       }
+//     } catch (error) {
+//       console.error("Error during login:", error);
+//       setError(error.response?.data?.detail || "Login failed. Please check your credentials.");
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
 function Login() {
   const navigate = useNavigate();
   const { setUser } = useContext(AuthContext);
@@ -16,26 +59,45 @@ function Login() {
 
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [csrfReady, setCsrfReady] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const initializeCSRF = async () => {
+    try {
+      await api.get('/get-csrf-token/');
+      setCsrfReady(true);
+      console.log("CSRF token verified");
+    } catch (err) {
+      console.error("CSRF initialization failed:", err);
+      setError("Security system error. Please refresh the page.");
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     setLoading(true);
     setError(null);
 
     try {
-      const response = await api.post("/login/", formData); // API call using the base URL
+      // Double-check CSRF before proceeding
+      if (!csrfReady) {
+        await initializeCSRF();
+      }
+
+      const response = await api.post("/login/", formData);
       console.log("Login successful:", response.data);
-      localStorage.setItem("token", response.data.token); // Save the token in local storage
+      
+      localStorage.setItem("token", response.data.token);
+      
       if (response.data.message === "Login successful") {
         const userInfo = await api.get("/user/");
         setUser(userInfo.data);
+        
         const role = userInfo.data.role;
-        console.log(role)
+        console.log(role);
         if (role === "student") {
           navigate("/student-dashboard");
         } else if (role === "instructor") {
@@ -43,12 +105,23 @@ function Login() {
         }
       }
     } catch (error) {
-      console.error("Error during login:", error);
-      setError(error.response?.data?.detail || "Login failed. Please check your credentials.");
+      console.error("Login error:", error);
+      
+      if (error.response?.status === 403) {
+        setError("Session expired. Please refresh and try again.");
+        setCsrfReady(false); // Force CSRF reinitialization
+      } else {
+        setError(error.response?.data?.detail || "Login failed. Please check your credentials.");
+      }
     } finally {
       setLoading(false);
     }
   };
+
+  // Initialize CSRF on component mount
+  useState(() => {
+    initializeCSRF();
+  }, []);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">

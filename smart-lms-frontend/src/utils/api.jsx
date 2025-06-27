@@ -1,75 +1,85 @@
 import axios from "axios";
 
-// 1. Configure Axios Instance
+
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL || "https://smart-lms.onrender.com/api",
-  withCredentials: true, // Critical for cookies
+  withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json'
   }
 });
 
-// 2. Enhanced CSRF Token Getter
+
+let csrfInitialized = false;
+const CSRF_COOKIE_NAME = 'csrftoken';
+
 function getCSRFToken() {
   const cookie = document.cookie
     .split('; ')
-    .find(row => row.startsWith('csrftoken='));
+    .find(row => row.startsWith(`${CSRF_COOKIE_NAME}=`));
   return cookie ? decodeURIComponent(cookie.split('=')[1]) : null;
 }
 
-// 3. CSRF Management System
-let csrfInitialized = false;
-
 export const ensureCSRF = async () => {
-  if (csrfInitialized) return true;
+  if (csrfInitialized && getCSRFToken()) return true;
   
   try {
     const response = await api.get('/get-csrf-token/');
+    if (!getCSRFToken()) {
+      throw new Error('CSRF cookie not set after API call');
+    }
     csrfInitialized = true;
-    console.debug('CSRF initialized', response);
+    console.debug('CSRF initialized', document.cookie);
     return true;
   } catch (err) {
     console.error('CSRF initialization failed:', err);
-    throw new Error('Security system failed to initialize');
+    csrfInitialized = false;
+    throw new Error('Security system initialization failed');
   }
 };
 
-// 4. Request Interceptor (Optimized)
 api.interceptors.request.use(async (config) => {
-  // Skip for non-modifying requests
-  if (!['post', 'put', 'patch', 'delete'].includes(config.method.toLowerCase())) {
+  
+  if (['get', 'head', 'options'].includes(config.method.toLowerCase())) {
     return config;
   }
 
-  // Ensure CSRF is ready
-  if (!csrfInitialized) {
-    await ensureCSRF();
-  }
-
-  // Attach token
-  const token = getCSRFToken();
+  
+  let token = getCSRFToken();
   if (!token) {
-    console.error('CSRF token missing! Cookies:', document.cookie);
-    throw new Error('Security token missing');
+    console.warn('No CSRF token found, fetching new one...');
+    await ensureCSRF();
+    token = getCSRFToken();
+    
+    if (!token) {
+      throw new Error('Persistent CSRF token failure');
+    }
   }
 
   config.headers['X-CSRFToken'] = token;
-  console.debug(`Attached CSRF to ${config.method} ${config.url}`);
   return config;
+}, (error) => {
+  return Promise.reject(error);
 });
 
-// 5. Response Interceptor (Error Handling)
+
 api.interceptors.response.use(
   response => response,
-  error => {
-    if (error.response?.status === 403 && error.config.url !== '/get-csrf-token/') {
-      console.warn('CSRF failed, resetting token...');
-      csrfInitialized = false; // Force re-init on next request
+  async (error) => {
+    const originalRequest = error.config;
+    
+    
+    if (error.response?.status === 403 && !originalRequest._retry) {
+      console.warn('CSRF validation failed, retrying...');
+      originalRequest._retry = true;
+      csrfInitialized = false;
+      await ensureCSRF();
+      return api(originalRequest);
     }
+    
     return Promise.reject(error);
   }
 );
 
 export default api;
-

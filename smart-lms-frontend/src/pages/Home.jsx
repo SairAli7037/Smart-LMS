@@ -7,7 +7,7 @@ import { AuthContext } from "../context/AuthContext";
 
 export default function Home() {
   
-  const { handleDemoLogin, loadingRole } = useDemoLogin();
+  const { handleDemoLogin, loadingRole, error, clearError } = useDemoLogin();
   const { user } = useContext(AuthContext);
   const [loaded, setLoaded] = useState(false);
   const Spinner = () => (
@@ -92,7 +92,7 @@ export default function Home() {
       </section>
 
      {/* Demo Section */}
-      { !user && 
+      {/* { !user && 
         (<section className="bg-blue-50 py-12 px-4">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl font-bold mb-4 text-blue-800">Try the Platform Instantly</h2>
@@ -130,9 +130,69 @@ export default function Home() {
 
           </div>
         </div>
-      </section>)
-}
+      </section>) */}
 
+   
+{/* Demo Section */}
+{!user && (
+  <section className="bg-blue-50 py-12 px-4 relative">
+    {/* Error Message (shown at top of section) */}
+    {error && (
+      <div className="max-w-4xl mx-auto mb-6 bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded">
+        <div className="flex justify-between items-center">
+          <p>{error}</p>
+          <button 
+            onClick={clearError}
+            className="text-red-700 hover:text-red-900"
+          >
+            ×
+          </button>
+        </div>
+      </div>
+    )}
+
+    <div className="max-w-4xl mx-auto text-center">
+      <h2 className="text-3xl font-bold mb-4 text-blue-800">Try the Platform Instantly</h2>
+      <p className="text-gray-700 mb-8">
+        Experience Smart LMS from both perspectives — as a student and as an instructor.
+      </p>
+      
+      <div className="flex flex-col sm:flex-row justify-center gap-6">
+        <button
+          onClick={() => handleDemoLogin("instructor")}
+          disabled={loadingRole === "instructor"}
+          className={`bg-blue-600 text-white font-semibold px-6 py-3 rounded-md hover:bg-blue-700 transition flex items-center justify-center min-w-[160px] ${
+            loadingRole === "instructor" ? 'opacity-75' : ''
+          }`}
+        >
+          {loadingRole === "instructor" ? (
+            <span className="flex items-center gap-2">
+              <Spinner /> Logging in...
+            </span>
+          ) : (
+            "Try as Instructor"
+          )}
+        </button>
+        
+        <button
+          onClick={() => handleDemoLogin("student")}
+          disabled={loadingRole === "student"}
+          className={`bg-gray-600 text-white font-semibold px-6 py-3 rounded-md hover:bg-gray-700 transition flex items-center justify-center min-w-[160px] ${
+            loadingRole === "student" ? 'opacity-75' : ''
+          }`}
+        >
+          {loadingRole === "student" ? (
+            <span className="flex items-center gap-2">
+              <Spinner /> Logging in...
+            </span>
+          ) : (
+            "Try as Student"
+          )}
+        </button>
+      </div>
+    </div>
+  </section>
+)}
       {/* Testimonials */}
       <section className="bg-white py-16">
         <div className="max-w-4xl mx-auto px-4 text-center">

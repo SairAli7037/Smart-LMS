@@ -83,9 +83,15 @@ def logout_view(request):
 
 @ensure_csrf_cookie
 def get_csrf_token(request):
-    response = JsonResponse({'message': 'CSRF cookie set'})
-    response["Access-Control-Allow-Origin"] = "https://smart-lms-frontend.onrender.com"
-    response["Access-Control-Allow-Credentials"] = "true"
+    response = JsonResponse({"detail": "CSRF cookie set"})
+    response.set_cookie(
+        "csrftoken",
+        get_token(request),
+        domain=".onrender.com",
+        secure=True,
+        httponly=False,
+        samesite="Lax"
+    )
     return response
 
 

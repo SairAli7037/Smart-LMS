@@ -36,13 +36,32 @@ import StudentAIChat from './pages/StudentPage/StudentAIChat';
 
 function App() {
 
-  useEffect(() => {
-    ensureCSRF()
-      .then(() => console.log("CSRF token fetched"))
-      .catch(err => {
-        console.error("Failed to fetch CSRF token:", err);
-      });
-  }, []);
+  // useEffect(() => {
+  //   ensureCSRF()
+  //     .then(() => console.log("CSRF token fetched"))
+  //     .catch(err => {
+  //       console.error("Failed to fetch CSRF token:", err);
+  //     });
+  // }, []);
+  // Enhance your CSRF initialization
+useEffect(() => {
+  const initializeCSRF = async () => {
+    try {
+      await api.get('/get-csrf-token/');
+      console.log('CSRF token initialized');
+      
+      // Verify cookie was actually set
+      if (!document.cookie.includes('csrftoken')) {
+        console.error('CSRF cookie not found after initialization');
+      }
+    } catch (err) {
+      console.error('CSRF initialization failed:', err);
+      // Add retry logic if needed
+    }
+  };
+
+  initializeCSRF();
+}, []);
 
   return (
     <BrowserRouter>
