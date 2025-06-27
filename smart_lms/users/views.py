@@ -83,11 +83,10 @@ def logout_view(request):
 
 @ensure_csrf_cookie
 def get_csrf_token(request):
-    return JsonResponse({'message': 'CSRF cookie set'})
-    # token=get_token(request)
-    # response = JsonResponse({'message': 'CSRF cookie set', 'csrfToken': token})
-    # return response
-    # return JsonResponse({'csrfToken': get_token(request)})
+    response = JsonResponse({'message': 'CSRF cookie set'})
+    response["Access-Control-Allow-Origin"] = "https://smart-lms-frontend.onrender.com"
+    response["Access-Control-Allow-Credentials"] = "true"
+    return response
 
 
 @login_required
