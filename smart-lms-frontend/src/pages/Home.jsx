@@ -2,14 +2,14 @@ import { Link ,useNavigate} from "react-router-dom";
 import BackgroundImage from "../utils/images/bg3.jpeg"
 import api from "../utils/api"; 
 import useDemoLogin from "./useDemoLogin";
-import { useContext } from "react";
+import { useContext , useState} from "react";
 import { AuthContext } from "../context/AuthContext";
 
 export default function Home() {
   
   const { handleDemoLogin, loadingRole } = useDemoLogin();
   const { user } = useContext(AuthContext);
-
+  const [loaded, setLoaded] = useState(false);
   const Spinner = () => (
   <svg className="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24">
     <circle
@@ -35,12 +35,14 @@ export default function Home() {
       <section className="relative text-white overflow-hidden p-50">
          {/* Background Image */}
              <img
-               src={BackgroundImage} // Replace with your image path
-               alt="Hero Background"
-               className="absolute inset-0 w-full h-full object-cover opacity-20 z-0"
-             />
-
-             {/* Overlay (optional: to darken the image slightly) */}
+                 src={BackgroundImage}
+                 alt="Hero Background"
+                 onLoad={() => setLoaded(true)}
+                 className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 z-0 ${
+                   loaded ? 'opacity-20' : 'opacity-0'
+                 }`}
+               />
+           
             <div className="absolute inset-0 bg-black opacity-15 z-0"></div> 
             
         <div className="relative z-10 max-w-6xl mx-auto px-4 text-center">
