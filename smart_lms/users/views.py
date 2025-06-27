@@ -87,10 +87,11 @@ def get_csrf_token(request):
     response.set_cookie(
         "csrftoken",
         get_token(request),
-        domain=".onrender.com",
+        domain=".onrender.com",  # Note the leading dot
         secure=True,
-        httponly=False,
-        samesite="Lax"
+        httponly=False,  # Required for React to read
+        samesite="Lax",
+        max_age=86400  # 24 hours
     )
     return response
 

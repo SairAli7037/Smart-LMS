@@ -22,20 +22,64 @@ function getCSRFToken() {
 }
 
 export const ensureCSRF = async () => {
-  if (csrfInitialized && getCSRFToken()) return true;
-  
+  // 1. First check if we already have a valid token
+  const existingToken = getCSRFToken();
+  if (csrfInitialized && existingToken) {
+    console.debug('Using existing CSRF token');
+    return true;
+  }
+
   try {
-    const response = await api.get('/get-csrf-token/');
-    if (!getCSRFToken()) {
-      throw new Error('CSRF cookie not set after API call');
+    // 2. Explicitly clear any existing failed state
+    csrfInitialized = false;
+    
+    // 3. Make the token request with credentials
+    console.log('Attempting CSRF token fetch...');
+    const response = await api.get('/get-csrf-token/', {
+      headers: {
+        'Cache-Control': 'no-cache', // Prevent caching
+        'Pragma': 'no-cache'
+      }
+    });
+
+    // 4. Verify the cookie was actually set
+    const newToken = getCSRFToken();
+    if (!newToken) {
+      console.error('CSRF Debug:', {
+        responseHeaders: response.headers,
+        cookies: document.cookie,
+        responseData: response.data
+      });
+      throw new Error('CSRF cookie not found in document.cookie after successful response');
     }
+
+    // 5. Validate token format
+    if (newToken.length < 10) { // Basic length check
+      console.error('Invalid CSRF token format:', newToken);
+      throw new Error('Invalid CSRF token received');
+    }
+
     csrfInitialized = true;
-    console.debug('CSRF initialized', document.cookie);
+    console.log('CSRF initialized successfully', {
+      tokenPreview: `${newToken.substring(0, 5)}...${newToken.slice(-5)}`,
+      domain: document.domain
+    });
+    
     return true;
   } catch (err) {
-    console.error('CSRF initialization failed:', err);
     csrfInitialized = false;
-    throw new Error('Security system initialization failed');
+    
+    // Enhanced error diagnostics
+    const diagnosticInfo = {
+      error: err.message,
+      cookiePresent: document.cookie.includes('csrftoken'),
+      apiBaseURL: api.defaults.baseURL,
+      currentOrigin: window.location.origin,
+      cookieDomain: document.domain
+    };
+    
+    console.error('CSRF initialization failed:', diagnosticInfo);
+    throw new Error(`Security system failed: ${err.message}`);
   }
 };
 
