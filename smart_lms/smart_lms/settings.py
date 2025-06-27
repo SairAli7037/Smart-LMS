@@ -86,8 +86,6 @@ SESSION_COOKIE_SAMESITE = 'None'
 CSRF_COOKIE_SAMESITE = "None"
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 USE_X_FORWARDED_HOST = True
-SESSION_COOKIE_DOMAIN ='smart-lms-frontend.onrender.com' 
-CSRF_COOKIE_DOMAIN = 'smart-lms-frontend.onrender.com' 
 CORS_EXPOSE_HEADERS = [
     'Content-Type',
     'X-CSRFToken',
