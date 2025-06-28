@@ -44,24 +44,24 @@ function App() {
   //     });
   // }, []);
   // Enhance your CSRF initialization
-useEffect(() => {
-  const initializeCSRF = async () => {
-    try {
-      await api.get('/get-csrf-token/');
-      console.log('CSRF token initialized');
+// useEffect(() => {
+//   const initializeCSRF = async () => {
+//     try {
+//       await api.get('/get-csrf-token/');
+//       console.log('CSRF token initialized');
       
-      // Verify cookie was actually set
-      if (!document.cookie.includes('csrftoken')) {
-        console.error('CSRF cookie not found after initialization');
-      }
-    } catch (err) {
-      console.error('CSRF initialization failed:', err);
-      // Add retry logic if needed
-    }
-  };
+    
+//     } catch (err) {
+//       console.error('CSRF initialization failed:', err);
+//       // Add retry logic if needed
+//     }
+//   };
 
-  initializeCSRF();
-}, []);
+//   initializeCSRF();
+// }, []);
+useEffect(()=>{
+  ensureCSRF();
+},[]);
 
   return (
     <BrowserRouter>

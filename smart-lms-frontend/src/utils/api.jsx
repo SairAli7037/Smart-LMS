@@ -139,7 +139,20 @@ const api = axios.create({
   }
 });
 
-// No need for getCSRFToken or ensureCSRF manually
+export const ensureCSRF = async () => {
+  try {
+    await api.get('/get-csrf-token/', {
+      headers: {
+        'Cache-Control': 'no-cache',
+        'Pragma': 'no-cache'
+      }
+    });
+    console.log('✅ CSRF cookie set');
+  } catch (err) {
+    console.error('❌ Failed to fetch CSRF cookie:', err);
+    throw err;
+  }
+};
 
 api.interceptors.request.use((config) => {
   // CSRF token is sent automatically in cookies
@@ -148,28 +161,5 @@ api.interceptors.request.use((config) => {
   return Promise.reject(error);
 });
 
-api.interceptors.response.use(
-  response => response,
-  async (error) => {
-    const originalRequest = error.config;
-
-    // Retry on CSRF 403 errors (optional)
-    if (error.response?.status === 403 && !originalRequest._retry) {
-      originalRequest._retry = true;
-      console.warn('Retrying request due to 403 CSRF failure');
-
-      // Optional: hit CSRF endpoint (even though not necessary)
-      try {
-        await api.get('/get-csrf-token/');
-      } catch (e) {
-        console.error('Failed to refresh CSRF token');
-      }
-
-      return api(originalRequest);
-    }
-
-    return Promise.reject(error);
-  }
-);
 
 export default api;
