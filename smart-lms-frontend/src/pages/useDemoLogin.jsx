@@ -15,12 +15,9 @@ const useDemoLogin = () => {
 
     try {
       // 1. Ensure CSRF token is available
-      if (!document.cookie.includes('csrftoken')) {
+      
         await api.get("/get-csrf-token/");
-        if (!document.cookie.includes('csrftoken')) {
-          throw new Error('CSRF token not received');
-        }
-      }
+        
 
       // 2. Prepare demo credentials
       const credentials = {

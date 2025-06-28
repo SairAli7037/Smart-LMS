@@ -22,9 +22,7 @@ function Register() {
   const initializeCSRF = async () => {
     try {
       await api.get("/get-csrf-token/");
-      if (!document.cookie.includes('csrftoken')) {
-        throw new Error('CSRF cookie not set');
-      }
+     
       setCsrfReady(true);
       console.log("CSRF token verified");
     } catch (err) {
