@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../utils/api";
+import api, { ensureCSRF } from "../utils/api";
 import { AuthContext } from "../context/AuthContext";
 
 const useDemoLogin = () => {
@@ -17,7 +17,7 @@ const useDemoLogin = () => {
       // 1. Ensure CSRF token is available
       
         // await api.get("/get-csrf-token/");
-        
+           await ensureCSRF();
 
       // 2. Prepare demo credentials
       const credentials = {

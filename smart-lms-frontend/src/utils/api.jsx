@@ -144,6 +144,7 @@ export const ensureCSRF = async () => {
     await api.get('/get-csrf-token/', {
     });
     console.log('✅ CSRF cookie set');
+    console.log(document.cookie)
   } catch (err) {
     console.error('❌ Failed to fetch CSRF cookie:', err);
     throw err;
