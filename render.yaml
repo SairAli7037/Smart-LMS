@@ -7,7 +7,7 @@ services:
     workDir: .
     buildCommand: 
         pip install -r requirements.txt
-        python manage.py migrate --noinput
+        python smart_lms/manage.py migrate 
     startCommand: gunicorn smart_lms.smart_lms.wsgi:application
     envVars:
       - key: DJANGO_SETTINGS_MODULE
