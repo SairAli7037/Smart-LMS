@@ -93,6 +93,7 @@ SESSION_COOKIE_DOMAIN = ".onrender.com"
 CORS_EXPOSE_HEADERS = [
     'Content-Type',
     'X-CSRFToken',
+    'cache-control',
 ]
 LOGIN_URL = '/api/login/'
 

@@ -142,10 +142,6 @@ const api = axios.create({
 export const ensureCSRF = async () => {
   try {
     await api.get('/get-csrf-token/', {
-      headers: {
-        'Cache-Control': 'no-cache',
-        'Pragma': 'no-cache'
-      }
     });
     console.log('✅ CSRF cookie set');
   } catch (err) {
