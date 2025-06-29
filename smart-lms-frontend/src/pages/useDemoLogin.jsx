@@ -17,7 +17,7 @@ const useDemoLogin = () => {
       // 1. Ensure CSRF token is available
       
         // await api.get("/get-csrf-token/");
-           await ensureCSRF();
+          await ensureCSRF();
 
       // 2. Prepare demo credentials
       const credentials = {
