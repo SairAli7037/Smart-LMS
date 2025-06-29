@@ -24,4 +24,4 @@ certifi==2025.4.26
 
 asgiref==3.8.1
 
-
+psycopg2-binary==2.9.10
