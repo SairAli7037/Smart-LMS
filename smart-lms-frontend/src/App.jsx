@@ -59,9 +59,9 @@ function App() {
 
 //   initializeCSRF();
 // }, []);
-useEffect(()=>{
-  ensureCSRF();
-},[]);
+useEffect(() => {
+  ensureCSRF().catch(err => console.error("Failed to init CSRF:", err));
+}, []);
 
   return (
     <BrowserRouter>

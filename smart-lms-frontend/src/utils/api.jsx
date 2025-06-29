@@ -127,6 +127,17 @@
 // );
 
 // export default api;
+// export const ensureCSRF = async () => {
+//   try {
+//     await api.get('/get-csrf-token/', {
+//     });
+//     console.log('✅ CSRF cookie set');
+//     console.log(document.cookie)
+//   } catch (err) {
+//     console.error('❌ Failed to fetch CSRF cookie:', err);
+//     throw err;
+//   }
+// };
 
 import axios from "axios";
 
@@ -135,28 +146,28 @@ const api = axios.create({
   withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
-    'Accept': 'application/json'
+    Accept: 'application/json'
   }
 });
 
-export const ensureCSRF = async () => {
-  try {
-    await api.get('/get-csrf-token/', {
-    });
-    console.log('✅ CSRF cookie set');
-    console.log(document.cookie)
-  } catch (err) {
-    console.error('❌ Failed to fetch CSRF cookie:', err);
-    throw err;
-  }
-};
+let csrfToken = null;
+
+export async function ensureCSRF() {
+  const { data } = await api.get("/get-csrf-token/");
+  csrfToken = data.csrftoken;
+  console.log("☑️ CSRFTOKEN fetched:", csrfToken);
+}
 
 api.interceptors.request.use((config) => {
-  // CSRF token is sent automatically in cookies
+  if (["post", "put", "patch", "delete"].includes(config.method)) {
+    if (!csrfToken) {
+      throw new Error("CSRF token missing – call ensureCSRF() first");
+    }
+    config.headers["X-CSRFToken"] = csrfToken;
+  }
   return config;
-}, (error) => {
-  return Promise.reject(error);
 });
 
-
 export default api;
+
+

@@ -83,7 +83,8 @@ def logout_view(request):
 
 @ensure_csrf_cookie
 def get_csrf_token(request):
-    return JsonResponse({"message": "CSRF cookie set"})
+    token = get_token(request)       
+    return JsonResponse({'csrftoken': token})
 
 
 @login_required

@@ -83,9 +83,9 @@ function Login() {
 
     try {
       // Double-check CSRF before proceeding
-      if (!csrfReady) {
-        await initializeCSRF();
-      }
+      // if (!csrfReady) {
+      //   await initializeCSRF();
+      // }
 
       const response = await api.post("/login/", formData);
       console.log("Login successful:", response.data);
