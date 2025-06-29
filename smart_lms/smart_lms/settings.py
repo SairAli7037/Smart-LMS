@@ -70,7 +70,7 @@ CORS_ALLOWED_ORIGINS = [
      "https://smart-lms-frontend.onrender.com",
 ]
 CORS_ALLOW_CREDENTIALS =True 
-CORS_ALLOW_ALL_ORIGINS = False
+
 
 from corsheaders.defaults import default_headers
 CORS_ALLOW_HEADERS = list(default_headers) + [
@@ -89,7 +89,7 @@ SESSION_COOKIE_SECURE=True
 CSRF_COOKIE_HTTPONLY = False
 
 SESSION_COOKIE_SAMESITE = 'None'
-
+CSRF_COOKIE_SAMESITE = 'None'
 CORS_EXPOSE_HEADERS = [
     'Content-Type',
     'X-CSRFToken',

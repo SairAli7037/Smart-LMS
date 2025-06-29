@@ -61,6 +61,7 @@ function App() {
 // }, []);
 useEffect(()=>{
   ensureCSRF();
+  console.log(document.cookie);
 },[]);
 
   return (
