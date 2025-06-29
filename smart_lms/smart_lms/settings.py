@@ -77,6 +77,7 @@ CORS_ALLOW_HEADERS = list(default_headers) + [
     'Content-Type',
     'Authorization',
     'Accept',
+    'cache-control',
 ]
 
 CSRF_TRUSTED_ORIGINS = [ "https://smart-lms-frontend.onrender.com",]
