@@ -19,19 +19,7 @@ function Register() {
   const [success, setSuccess] = useState(null);
   const [csrfReady, setCsrfReady] = useState(false);
 
-  // Enhanced CSRF initialization
-  const initializeCSRF = async () => {
-    try {
-      await api.get("/get-csrf-token/");
-     
-      setCsrfReady(true);
-      console.log("CSRF token verified");
-    } catch (err) {
-      console.error("CSRF initialization failed:", err);
-      setMessage("Security system error. Please refresh the page.");
-      setCsrfReady(false);
-    }
-  };
+
 
   useEffect(() => {
     ensureCSRF();
@@ -48,13 +36,6 @@ function Register() {
     setSuccess(null);
 
     try {
-      // Ensure CSRF is ready before submission
-      // if (!csrfReady) {
-      //   await initializeCSRF();
-      //   if (!csrfReady) {
-      //     throw new Error('Security system not ready');
-      //   }
-      // }
 
       const response = await api.post("/register/", formData);
       
@@ -69,7 +50,7 @@ function Register() {
           role: 'student' 
         });
         
-        // Optional: Auto-redirect to login
+        
         setTimeout(() => navigate("/login"), 2000);
       } else {
         throw new Error(response.data.error || 'Registration failed');
@@ -138,7 +119,7 @@ function Register() {
         </form>
         <p className="text-center mt-4 text-sm text-gray-600">
           Already have an account? <a href="/login" className="text-blue-600 hover:underline">Login</a>
-        </p>initializeCSRF();
+        </p>;
       </div>
     </div>
   );

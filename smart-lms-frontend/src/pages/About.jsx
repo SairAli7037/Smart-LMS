@@ -16,7 +16,7 @@ const AboutUs = () => {
   return (
     <div className="bg-gray-50 text-gray-800">
       {/* Hero Section */}
-      <section className="relative text-white text-center py-20 md:py-32 px-4 sm:px-6">
+      <section className="relative text-white text-center py-20 min-h-[50vh] md:min-h-[70vh] md:py-32 px-4 sm:px-6">
         {/*Background image*/}
         <img
         src={BackgroundImage}
