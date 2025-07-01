@@ -41,7 +41,7 @@ const CourseDetail = () => {
     }
   };
 
-  if (loading) return <div className="min-h-screen bg-gray-100 p-6">Loading...</div>;
+  if (loading) return <div className="min-h-screen bg-gray-100 p-6 text-center">Loading...</div>;
   if (!course) return <div className="min-h-screen bg-gray-100 p-6">Course not found.</div>;
 
   return (

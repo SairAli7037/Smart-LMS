@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 const StudentCourses = () => {
   const [courses, setCourses] = useState([]);
+  const [loading,setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -14,6 +15,8 @@ const StudentCourses = () => {
         setCourses(response.data.courses);
       } catch (error) {
         console.error("Failed to fetch enrolled courses", error);
+      } finally{
+        setLoading(false);
       }
     };
     fetchMyCourses();
@@ -30,7 +33,9 @@ const StudentCourses = () => {
       <div className="max-w-7xl mx-auto px-4 py-12">
         <h1 className="text-4xl font-extrabold text-center text-blue-800 mb-10">My Enrolled Courses</h1>
 
-        {courses.length === 0 ? (
+        {loading ? (
+          <p className="text-gray-500 text-center">Loading Courses...</p>
+        ) : courses.length === 0 ? (
           <p className="text-center text-gray-500 text-lg">You have not enrolled in any courses yet.</p>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">

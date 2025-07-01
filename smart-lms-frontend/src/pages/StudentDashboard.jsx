@@ -25,7 +25,13 @@ function StudentDashboard() {
     return match ? `https://www.youtube.com/embed/${match[1]}` : url;
   };
  
-  if (!data) return <div className="p-10 text-center text-gray-600">Loading...</div>;
+  if (!data) {
+    return(
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+        <p className="text-gray-600 text-lg">Loading dashboard...</p>
+      </div>
+    );
+  }
  
   return (
     <div className="bg-gray-50 min-h-screen">

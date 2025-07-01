@@ -1,12 +1,12 @@
 
 import React, { useEffect, useState } from "react";
 import api from "../../utils/api";
-import Navbar from "../../components/Navbar";
 import {FaLock} from "react-icons/fa";
 import { LockClosedIcon, LockOpenIcon } from '@heroicons/react/24/solid';
 
 const StudentAllCourses = () => {
   const [courses, setCourses] = useState([]);
+  const [loading , setLoading] = useState(true);
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -15,6 +15,8 @@ const StudentAllCourses = () => {
         setCourses(response.data.courses);
       } catch (error) {
         console.error("Failed to fetch courses", error);
+      } finally{
+        setLoading(false);
       }
     };
     fetchCourses();
@@ -44,8 +46,12 @@ const StudentAllCourses = () => {
         <h1 className="text-4xl font-extrabold text-center text-blue-800 mb-12">
           All Available Courses
         </h1>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+       {loading ? (
+        <p className="text-gray-500 text-center">Loading Courses...</p>
+       ) : courses.length === 0 ? (
+         <p className="text-center text-gray-500 text-lg">No Available Course yet....</p>
+       ) : (
+         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {courses.map((course) => (
             <div
               key={course.id}
@@ -95,6 +101,8 @@ const StudentAllCourses = () => {
             </div>
           ))}
         </div>
+       )}
+        
       </div>
     </div>
   );
