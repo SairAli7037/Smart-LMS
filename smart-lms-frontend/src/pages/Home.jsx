@@ -36,6 +36,7 @@ export default function Home() {
          {/* Background Image */}
              <img
                  src={BackgroundImage}
+                loading="lazy"
                  alt="Hero Background"
                  onLoad={() => setLoaded(true)}
                  className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 z-0 ${
