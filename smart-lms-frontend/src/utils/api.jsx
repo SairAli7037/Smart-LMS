@@ -150,12 +150,18 @@ const api = axios.create({
   }
 });
 
-let csrfToken = null;
+let csrfToken =localStorage.getItem('csrfToken') || null;
 
 export async function ensureCSRF() {
-  const { data } = await api.get("/get-csrf-token/");
-  csrfToken = data.csrftoken;
-  console.log("☑️ CSRFTOKEN fetched:", csrfToken);
+  try {
+    const { data } = await api.get("/get-csrf-token/");
+    csrfToken = data.csrftoken;
+    localStorage.setItem('csrfToken', csrfToken); // Persist new token
+    console.log("🔄 New CSRF Token:", csrfToken);
+  } catch (error) {
+    console.error("❌ Failed to refresh CSRF token:", error);
+    throw error;
+  }
 }
 
 api.interceptors.request.use((config) => {

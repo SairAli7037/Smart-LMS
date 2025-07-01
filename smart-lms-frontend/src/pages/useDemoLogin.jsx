@@ -28,6 +28,8 @@ const useDemoLogin = () => {
       // 3. Attempt login
       const response = await api.post("/login/", credentials[role]);
       
+      await ensureCSRF();
+      
       if (response.data?.message !== "Login successful") {
         throw new Error(response.data?.error || "Unexpected login response");
       }
