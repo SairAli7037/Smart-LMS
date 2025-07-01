@@ -1,5 +1,6 @@
 import { useState } from "react";
 import api from "../utils/api"; 
+import { ensureCSRF } from "../utils/api";
 import InputField from "../components/InputField";
 import Button from "../components/Button";
 import { useNavigate } from "react-router-dom";
@@ -88,9 +89,12 @@ function Login() {
       // }
 
       const response = await api.post("/login/", formData);
+      
+      await ensureCSRF();
+
       console.log("Login successful:", response.data);
       
-      localStorage.setItem("token", response.data.token);
+      // localStorage.setItem("token", response.data.token);
       
       if (response.data.message === "Login successful") {
         const userInfo = await api.get("/user/");
@@ -119,9 +123,9 @@ function Login() {
   };
 
   // Initialize CSRF on component mount
-  useState(() => {
-    initializeCSRF();
-  }, []);
+  // useState(() => {
+  //   initializeCSRF();
+  // }, []);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
