@@ -1,5 +1,6 @@
 import { useState ,useEffect} from "react";
 import api from "../utils/api";  
+import { ensureCSRF } from "../utils/api";
 import InputField from "../components/InputField";
 import Button from "../components/Button";
 import { useNavigate } from "react-router-dom";
@@ -33,7 +34,7 @@ function Register() {
   };
 
   useEffect(() => {
-    initializeCSRF();
+    ensureCSRF();
   }, []);
 
   const handleChange = (e) => {
@@ -48,12 +49,12 @@ function Register() {
 
     try {
       // Ensure CSRF is ready before submission
-      if (!csrfReady) {
-        await initializeCSRF();
-        if (!csrfReady) {
-          throw new Error('Security system not ready');
-        }
-      }
+      // if (!csrfReady) {
+      //   await initializeCSRF();
+      //   if (!csrfReady) {
+      //     throw new Error('Security system not ready');
+      //   }
+      // }
 
       const response = await api.post("/register/", formData);
       
@@ -137,7 +138,7 @@ function Register() {
         </form>
         <p className="text-center mt-4 text-sm text-gray-600">
           Already have an account? <a href="/login" className="text-blue-600 hover:underline">Login</a>
-        </p>
+        </p>initializeCSRF();
       </div>
     </div>
   );
