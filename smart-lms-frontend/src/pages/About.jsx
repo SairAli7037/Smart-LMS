@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import BackgroundImage from "../utils/images/bg3.jpeg"
 const stats = [
   { label: "Students Enrolled", value: "12,000+" },
@@ -16,13 +17,13 @@ const AboutUs = () => {
   return (
     <div className="bg-gray-50 text-gray-800">
       {/* Hero Section */}
-      <section className="relative text-white text-center py-20 min-h-[50vh] md:min-h-[70vh] md:py-32 px-4 sm:px-6">
+      <section className="relative text-white text-center py-20 min-h-[50vh] md:min-h-[70vh] md:py-32 px-4 sm:px-6 overflow-hidden">
         {/*Background image*/}
         <img
         src={BackgroundImage}
         loading="lazy"
         alt="Hero Background"
-        className="absolute inset-0 w-full h-full object-cover opacity-30 md:opacity-20 z-0"
+        className="absolute inset-0 w-full h-full object-cover opacity-30 md:opacity-20 z-[-1]"
        />
   
           <div className="absolute inset-0 bg-black opacity-20 z-0"></div> 

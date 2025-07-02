@@ -39,7 +39,7 @@ export default function Home() {
                 loading="lazy"
                  alt="Hero Background"
                  onLoad={() => setLoaded(true)}
-                 className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 z-0 ${
+                 className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 z-[-1] ${
                    loaded ? 'opacity-30 md:opacity-20' : 'opacity-0'
                  }`}
                />
