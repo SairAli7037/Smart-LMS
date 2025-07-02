@@ -23,7 +23,7 @@ const AboutUs = () => {
         src={BackgroundImage}
         loading="lazy"
         alt="Hero Background"
-        className="absolute inset-0 w-full h-full object-cover opacity-30 md:opacity-20 z-[-1]"
+        className="absolute inset-0 w-full h-full object-cover opacity-30 md:opacity-20 z-0"
        />
   
           <div className="absolute inset-0 bg-black opacity-20 z-0"></div> 
