@@ -14,12 +14,7 @@ const useDemoLogin = () => {
     setError(null);
 
     try {
-      // 1. Ensure CSRF token is available
       
-        // await api.get("/get-csrf-token/");
-      
-
-      // 2. Prepare demo credentials
       const credentials = {
         instructor: { username: "demo_instructor", password: "demo1234" },
         student: { username: "demo_student", password: "demo1234" },

@@ -143,12 +143,7 @@ function StudentDashboard() {
                 <h3 className="font-semibold text-lg">{quiz.title}</h3>
                 <p className="text-sm text-gray-600">Assigned: {new Date(quiz.assigned_at).toLocaleDateString()}</p>
                 <p className="text-sm">Status: {quiz.is_completed ? "Completed" : "Pending"}</p>
-                {/* <button
-                  onClick={() => navigate(`/take-quiz/${quiz.quiz_id}`)}
-                  className="mt-3 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm"
-                >
-                  {quiz.is_completed ? "Retake Quiz" : "Start Quiz"}
-                </button> */}
+                
               </div>
             ))}
           </div>

@@ -36,29 +36,6 @@ import StudentAIChat from './pages/StudentPage/StudentAIChat';
 
 function App() {
 
-  // useEffect(() => {
-  //   ensureCSRF()
-  //     .then(() => console.log("CSRF token fetched"))
-  //     .catch(err => {
-  //       console.error("Failed to fetch CSRF token:", err);
-  //     });
-  // }, []);
-  // Enhance your CSRF initialization
-// useEffect(() => {
-//   const initializeCSRF = async () => {
-//     try {
-//       await api.get('/get-csrf-token/');
-//       console.log('CSRF token initialized');
-      
-    
-//     } catch (err) {
-//       console.error('CSRF initialization failed:', err);
-//       // Add retry logic if needed
-//     }
-//   };
-
-//   initializeCSRF();
-// }, []);
 useEffect(() => {
   ensureCSRF().catch(err => console.error("Failed to init CSRF:", err));
 }, []);
@@ -145,7 +122,7 @@ useEffect(() => {
         }
       />
           <Route
-                path="//instructor/my-courses"
+                path="/instructor/my-courses"
                 element={
               <PrivateRoute allowedRoles={["instructor"]}>
                 <MyCourses/>

@@ -83,10 +83,7 @@ function Login() {
     setError(null);
 
     try {
-      // Double-check CSRF before proceeding
-      // if (!csrfReady) {
-      //   await initializeCSRF();
-      // }
+      
 
       const response = await api.post("/login/", formData);
       
@@ -94,7 +91,7 @@ function Login() {
 
       console.log("Login successful:", response.data);
       
-      // localStorage.setItem("token", response.data.token);
+     
       
       if (response.data.message === "Login successful") {
         const userInfo = await api.get("/user/");
@@ -122,10 +119,7 @@ function Login() {
     }
   };
 
-  // Initialize CSRF on component mount
-  // useState(() => {
-  //   initializeCSRF();
-  // }, []);
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
