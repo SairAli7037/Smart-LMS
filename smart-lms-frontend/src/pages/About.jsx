@@ -1,7 +1,5 @@
 import React from "react";
 import BackgroundImage from "../utils/images/bg3.jpeg"
-import { useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
 const stats = [
   { label: "Students Enrolled", value: "12,000+" },
   { label: "Courses Available", value: "150+" },
@@ -13,7 +11,7 @@ const team = [
   { name: "Jane Smith", role: "Head of Content" },
   { name: "Mike Johnson", role: "Lead Developer" },
 ];
-const { user } = useContext(AuthContext);
+
 const AboutUs = () => {
   return (
     <div className="bg-gray-50 text-gray-800">
@@ -88,14 +86,13 @@ const AboutUs = () => {
         <p className="mb-6 text-base sm:text-lg opacity-90">
           Join thousands of learners on LearnSphere today.
         </p>
-        {!user &&(
+       
         <Link to = "/register"
           className="inline-block bg-white text-blue-600 px-5 py-2 sm:px-6 sm:py-3 rounded-full font-semibold hover:bg-gray-100 transition text-sm sm:text-base"
         >
           Get Started
         </Link>
-)}
-      </div>
+   </div>
       </section>
      </div>
 );
