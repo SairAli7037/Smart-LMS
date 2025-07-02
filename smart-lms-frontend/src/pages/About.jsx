@@ -1,6 +1,7 @@
 import React from "react";
 import BackgroundImage from "../utils/images/bg3.jpeg"
 import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 const stats = [
   { label: "Students Enrolled", value: "12,000+" },
   { label: "Courses Available", value: "150+" },
