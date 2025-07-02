@@ -58,6 +58,7 @@ const CreateQuiz = () => {
             <label className="block mb-1">Quiz Title</label>
             <input
               type="text"
+              id="quiz_title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               className="w-full px-4 py-2 border rounded"
@@ -68,6 +69,7 @@ const CreateQuiz = () => {
             <label className="block mb-1">Description</label>
             <textarea
               value={description}
+              id="description"
               onChange={(e) => setDescription(e.target.value)}
               className="w-full px-4 py-2 border rounded"
               rows={4}
@@ -84,6 +86,7 @@ const CreateQuiz = () => {
                     <label className="flex items-start">
                       <input
                         type="checkbox"
+                        id="checkbox"
                         checked={selectedQuestions.includes(q.id)}
                         onChange={() => handleCheckboxChange(q.id)}
                         className="mt-1 mr-2"
