@@ -1,5 +1,7 @@
 import React from "react";
+import { useContext } from "react";
 
+const {user}=useContext(AuthContext);
 const services = [
   {
     title: "Interactive Courses",
@@ -97,12 +99,13 @@ const Services = () => {
         <p className="mb-5 sm:mb-6 text-base sm:text-lg opacity-90">
           Join thousands of students and explore endless learning opportunities.
         </p>
-        <a
-          href="/register"
+        {!user && (
+        <Link to ="/register"
           className="inline-block bg-white text-blue-600 px-5 py-2 sm:px-6 sm:py-3 rounded-full font-semibold hover:bg-gray-100 transition text-sm sm:text-base"
         >
           Join Now
-        </a>
+        </Link>
+        )}
       </div>
     </section>
   </div>
