@@ -41,7 +41,7 @@ useEffect(() => {
 }, []);
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename='/'>
     <AuthProvider>
       <Navbar/>
       <Routes>
