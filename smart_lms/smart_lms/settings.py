@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-@o%46r@o634-$^(u8p*+t=c1fhbzva&*$2-503$&uom(bmo1ad
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.onrender.com']
+ALLOWED_HOSTS = ['.onrender.com', '.vercel.app']
 
 load_dotenv()
 TOGETHER_API_KEY = os.getenv("TOGETHER_API_KEY")
@@ -68,6 +68,7 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
      "https://smart-lms-frontend.onrender.com",
+     "https://smart-lms-nine.vercel.app",
 ]
 CORS_ALLOW_CREDENTIALS =True 
 
@@ -81,7 +82,7 @@ CORS_ALLOW_HEADERS = list(default_headers) + [
     'cache-control',
 ]
 
-CSRF_TRUSTED_ORIGINS = [ "https://smart-lms-frontend.onrender.com",]
+CSRF_TRUSTED_ORIGINS = [ "https://smart-lms-frontend.onrender.com","https://smart-lms-nine.vercel.app"]
 
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE=True
