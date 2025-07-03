@@ -12,8 +12,20 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     emptyOutDir: true,
+    manifest: true,
+    rollupOptions: {
+      output: {
+        assetFileNames: 'assets/[name].[hash][extname]',
+        entryFileNames: 'assets/[name].[hash].js'
+      }
+    }
   },
   server: {
-    historyApiFallback: true,
+    historyApiFallback: {
+      disableDotRule: true,
+      rewrites: [
+        { from: /\/.*/, to: '/index.html' } // Catch-all for all routes
+      ]
+    }
   }
 })
