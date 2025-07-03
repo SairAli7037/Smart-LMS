@@ -31,6 +31,7 @@ import Home from './pages/Home';
 import AboutUs from './pages/About';
 import Services from './pages/Services';
 import StudentAIChat from './pages/StudentPage/StudentAIChat';
+import { Navigate } from 'react-router-dom';
 
 
 
@@ -186,6 +187,7 @@ useEffect(() => {
         }
       />
       </Routes>
+      <Route path="*" element={<Navigate to="/" replace />} />
       </AuthProvider>
      
     </BrowserRouter>
