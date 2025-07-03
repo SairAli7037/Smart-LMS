@@ -25,8 +25,8 @@ services:
     env: static
     region: oregon
     plan: free
-    buildCommand: cd smart-lms-frontend && npm install && npm run build
-    staticPublishPath: smart-lms-frontend/dist
+    buildCommand: cd smart-lms-frontend && npm install && npm run build && cp public/_redirects dist/
+    staticPublishPath: ./smart-lms-frontend/dist
     buildFilter:
       paths:
         - smart-lms-frontend/**
