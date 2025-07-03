@@ -186,8 +186,8 @@ useEffect(() => {
               </PrivateRoute>
         }
       />
-      </Routes>
       <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
       </AuthProvider>
      
     </BrowserRouter>
